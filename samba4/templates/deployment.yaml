@@ -112,18 +112,18 @@ spec:
         persistentVolumeClaim:
           claimName: {{ if .Values.persistence.pvc.existingClaim }}{{ .Values.persistence.pvc.existingClaim }}{{- else }}{{ template "samba4.fullname" . }}-data{{- end }}
 {{ else if eq .Values.persistence.type "flexVolume" }}
-{{ required "A valid flexVolume block is required when using flexVolume persistence!" .Values.persistence.flexVolume }}
+#{{ required "A valid flexVolume block is required when using flexVolume persistence!" .Values.persistence.flexVolume }}
         flexVolume:
 {{ .Values.persistence.flexVolume | toYaml | indent 10 }}
 {{- else if eq .Values.persistence.type "hostPath" }}
-{{- required "A valid hostPath.path is required when using hostPath persistence!" .Values.persistence.hostPath.path }}
+#{{ required "A valid hostPath.path is required when using hostPath persistence!" .Values.persistence.hostPath.path }}
         hostPath:
           path: {{ .Values.persistence.hostPath.path }}
 {{ if .Values.persistence.hostPath.type -}}
           type: {{ .Values.persistence.hostPath.type }}
 {{ end -}}
 {{ else if eq .Values.persistence.type "other" -}}
-{{ required "A valid other block is required when using flexVolume persistence!" .Values.persistence.other }}
+#{{ required "A valid other block is required when using flexVolume persistence!" .Values.persistence.other }}
 {{ .Values.persistence.other | toYaml | indent 8 }}
 {{ else -}}
 {{ fail "if persistence is enabled, persistence.type must be one of 'pvc','flexVolume','hostPath' or 'other'!" }}
@@ -139,18 +139,18 @@ spec:
         persistentVolumeClaim:
           claimName: {{ if $pp.pvc.existingClaim }}{{ $pp.pvc.existingClaim }}{{- else }}{{ template "samba4.fullname" . }}-private{{- end }}
 {{ else if eq ($pp.type | default $p.type) "flexVolume" }}
-{{ required "A valid flexVolume block is required when using hostPath persistence!" $pp.flexVolume }}
+#{{ required "A valid flexVolume block is required when using hostPath persistence!" $pp.flexVolume }}
         flexVolume:
 {{ $pp.flexVolume | toYaml | indent 10 }}
 {{ else if eq ($pp.type | default $p.type) "hostPath" }}
-{{ required "A valid flexVolume block is required when using flexVolume persistence!" .Values.privatePersistence.flexVolume }}
+#{{ required "A valid flexVolume block is required when using flexVolume persistence!" .Values.privatePersistence.flexVolume }}
         hostPath:
           path: {{ if .Values.privatePersistence.hostPath.path }}{{ .Values.privatePersistence.hostPath.path }}{{ else }}{{ .Values.persistence.hostPath.path }}/.smbprivate/{{ end }}
 {{ if .Values.privatePersistence.hostPath.type -}}
           type: {{ $pp.hostPath.type | $p.hostPath.type | default "Directory" | quote }}
 {{ end -}}
 {{ else if eq ($pp.type | default $p.type) "other" -}}
-{{ required "A valid other block is required when using flexVolume persistence!" .Values.privatePersistence.other }}
+#{{ required "A valid other block is required when using flexVolume persistence!" .Values.privatePersistence.other }}
 {{ $pp.other | toYaml | indent 8 }}
 {{ else -}}
 {{ fail "if privatePersistence is enabled, privatePersistence.type must be one of 'pvc','flexVolume','hostPath' or 'other'!" }}
