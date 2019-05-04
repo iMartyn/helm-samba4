@@ -11,8 +11,8 @@ metadata:
     "helm.sh/hook": test-success
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args:  ['{{ include "samba4.fullname" . }}:{{ .Values.service.port }}']
+    - name: smbclient
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      command: ['smbclient']
+      args:  ['-L','{{ include "samba4.fullname" . }}']
   restartPolicy: Never
