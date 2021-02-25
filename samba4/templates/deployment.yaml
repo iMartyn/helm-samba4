@@ -34,6 +34,10 @@ spec:
         checksum/script: {{ $scriptchecksum }}
 {{- end }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -86,7 +90,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       volumes:
-{{ if .Values.image.lacksK8sScript -}}
+{{ if .Values.image.lacksK8sScript }}
       - name: scripts
         configMap:
           name: {{ include "samba4.fullname" . }}-packagescripts
