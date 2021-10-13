@@ -1,3 +1,4 @@
+{{- if .Values.tests.enabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -10,9 +11,14 @@ metadata:
   annotations:
     "helm.sh/hook": test-success
 spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
   containers:
     - name: smbclient
       image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
       command: ['smbclient']
       args:  ['-L','{{ include "samba4.fullname" . }}']
   restartPolicy: Never
+{{- end -}}

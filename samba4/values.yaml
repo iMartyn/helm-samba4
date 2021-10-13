@@ -16,6 +16,8 @@ image:
   tag: stable
   pullPolicy: IfNotPresent
 
+imagePullSecrets: {}
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -49,7 +51,10 @@ livenessProbe:
 
 service:
   type: ClusterIP
+  # Applicable only for ClusterIP type
+  headless: false
   port: 445
+  annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -68,3 +73,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+tests:
+  enabled: false
